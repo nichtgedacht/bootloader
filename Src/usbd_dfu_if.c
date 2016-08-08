@@ -55,11 +55,11 @@
 /** @defgroup USBD_DFU_Private_Defines
   * @{
   */ 
-#define FLASH_DESC_STR      "@Internal Flash   /0x08000000/03*016Ka,01*016Kg,01*064Kg,07*128Kg,04*016Kg,01*064Kg,07*128Kg"
+#define FLASH_DESC_STR      "@Internal Flash   /0x08000000/03*016Ka,01*016Kg,01*064Kg,07*128Kg,04*016Kg,01*064Kg,07*128Kg"  
 /* USER CODE BEGIN PRIVATE_DEFINES */
 #define FLASH_ERASE_TIME    (uint16_t)50
 #define FLASH_PROGRAM_TIME  (uint16_t)50
-#define FLASH_DESC_STR      "@Internal Flash   /0x08000000/1*016Ka,28*004Kg"
+#define FLASH_DESC_STR      "@Internal Flash   /0x08000000/01*016Ka,112*001Kg"
 /* USER CODE END PRIVATE_DEFINES */
   
 /**
@@ -152,7 +152,7 @@ uint16_t MEM_If_Init_FS(void)
   */
 uint16_t MEM_If_DeInit_FS(void)
 { 
-  /* USER CODE BEGIN 1 */
+  /* USER CODE BEGIN 1 */ 
   while (HAL_FLASH_Lock() != HAL_OK) {}
   //HAL_FLASH_Lock();
   return (USBD_OK);

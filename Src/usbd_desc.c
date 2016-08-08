@@ -56,7 +56,7 @@
 /** @defgroup USBD_DESC_Private_Defines
   * @{
   */ 
-#define USBD_VID     1155
+#define USBD_VID     1253
 #define USBD_LANGID_STRING     1033
 #define USBD_MANUFACTURER_STRING     "nichtgedacht"
 #define USBD_PID_FS     57105
