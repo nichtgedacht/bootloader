@@ -60,6 +60,7 @@
 #define FLASH_ERASE_TIME    (uint16_t)50
 #define FLASH_PROGRAM_TIME  (uint16_t)50
 #define FLASH_DESC_STR      "@Internal Flash   /0x08000000/01*016Ka,112*001Kg"
+
 /* USER CODE END PRIVATE_DEFINES */
   
 /**

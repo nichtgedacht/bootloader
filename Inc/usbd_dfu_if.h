@@ -55,13 +55,14 @@
   * @{
   */ 
 /* USER CODE BEGIN EXPORTED_DEFINES */
-//#define APPLICATION_ADDRESS     (uint32_t)0x08004000
-//#define FLASH_END_ADD           (uint32_t)0x0801FC00
-
- extern uint32_t APPLICATION_ADDRESS;
- extern uint32_t FLASH_END_ADD;
-
-
+#define APPLICATION_ADDRESS     (uint32_t)0x08004000
+#define FLASH_END_ADD           (uint32_t)0x0801FC00
+#define ADDR_FLASH_PAGE_124   ((uint32_t)0x0801F000) // Base @ of Page 124, 1 Kbytes
+#define ADDR_FLASH_PAGE_125   ((uint32_t)0x0801F400) // Base @ of Page 125, 1 Kbytes
+#define ADDR_FLASH_PAGE_126   ((uint32_t)0x0801F800) // Base @ of Page 126, 1 Kbytes
+#define ADDR_FLASH_PAGE_127   ((uint32_t)0x0801FC00) // Base @ of Page 127, 1 Kbytes
+#define FLASH_USER_START_ADDR   ADDR_FLASH_PAGE_125
+#define FLASH_USER_END_ADDR     ADDR_FLASH_PAGE_125 + FLASH_PAGE_SIZE
 /* USER CODE END EXPORTED_DEFINES */
 
 /**

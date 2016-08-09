@@ -41,14 +41,6 @@
 #include "usbd_dfu_if.h"
 #include "stm32f1xx_hal.h"
 
-//#define APPLICATION_ADDRESS     (uint32_t)0x08004000      /* Start user code address: ADDR_FLASH_PAGE_8 */
-#define ADDR_FLASH_PAGE_124   ((uint32_t)0x0801F000) // Base @ of Page 124, 1 Kbytes
-#define ADDR_FLASH_PAGE_125   ((uint32_t)0x0801F400) // Base @ of Page 125, 1 Kbytes
-#define ADDR_FLASH_PAGE_126   ((uint32_t)0x0801F800) // Base @ of Page 126, 1 Kbytes
-#define ADDR_FLASH_PAGE_127   ((uint32_t)0x0801FC00) // Base @ of Page 127, 1 Kbytes
-#define FLASH_USER_START_ADDR   ADDR_FLASH_PAGE_125
-#define FLASH_USER_END_ADDR     ADDR_FLASH_PAGE_125 + FLASH_PAGE_SIZE
-
 typedef void (*pFunction)(void);
 
 /* USER CODE END Includes */
@@ -79,8 +71,6 @@ uint32_t write_flash_vars(uint32_t* data, uint16_t length, uint16_t offset);
 
 /* USER CODE BEGIN 0 */
 
-uint32_t APPLICATION_ADDRESS = 0x08004000;
-uint32_t FLASH_END_ADD = 0x0801FC00;
 uint32_t flash_buf[256];
 
 /* USER CODE END 0 */
