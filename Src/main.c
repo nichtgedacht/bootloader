@@ -106,12 +106,15 @@ int main(void)
     // Jump to App if flag is not set and also switch is not pressed
     if (GPIO_PIN_SET == HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8) && strcmp((const char *) flash_buf, (const char *) "DFU") != 0)
     {
+        // Test if application seems to be programmed at APPLICATION_ADDRESS
+        if (((*(__IO uint32_t*) APPLICATION_ADDRESS ) & 0x2FFE0000) == 0x20000000)
+        {
+            JumpAddress = *(__IO uint32_t*) (APPLICATION_ADDRESS + 4);
+            JumpToApplication = (pFunction) JumpAddress;
 
-        JumpAddress = *(__IO uint32_t*) (APPLICATION_ADDRESS + 4);
-        JumpToApplication = (pFunction) JumpAddress;
-
-        __set_MSP(*(__IO uint32_t*) APPLICATION_ADDRESS);
-        JumpToApplication();
+            __set_MSP(*(__IO uint32_t*) APPLICATION_ADDRESS);
+            JumpToApplication();
+        }
     }
 
     // Dump and erase flash page. Clear flag in page buffer and write back to flash keeping the config vars
