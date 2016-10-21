@@ -103,12 +103,19 @@ int main(void)
     HAL_Delay(100);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
 
+    // Don't beep
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);
+
     // Jump to App if flag is not set and also switch is not pressed
     if (GPIO_PIN_SET == HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8) && strcmp((const char *) flash_buf, (const char *) "DFU") != 0)
     {
         // Test if application seems to be programmed at APPLICATION_ADDRESS
         if (((*(__IO uint32_t*) APPLICATION_ADDRESS ) & 0x2FFE0000) == 0x20000000)
         {
+
+            // Prevent motor start while reboot
+            HAL_Delay(150);
+
             JumpAddress = *(__IO uint32_t*) (APPLICATION_ADDRESS + 4);
             JumpToApplication = (pFunction) JumpAddress;
 
@@ -134,17 +141,6 @@ int main(void)
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
-
-        /*
-         if (GPIO_PIN_RESET == HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8))
-         {
-         JumpAddress = *(__IO uint32_t*) (APPLICATION_ADDRESS + 4);
-         JumpToApplication = (pFunction) JumpAddress;
-
-         __set_MSP(*(__IO uint32_t*) APPLICATION_ADDRESS);
-         JumpToApplication();
-         }
-         */
 
     }
     /* USER CODE END 3 */
