@@ -1,6 +1,6 @@
 Configuration	bootloader
-STM32CubeMX 	4.15.1
-Date	08/08/2016
+STM32CubeMX 	4.18.0
+Date	01/13/2017
 MCU	STM32F103C8Tx
 
 
@@ -32,14 +32,14 @@ SOFTWARE PROJECT
 
 Project Settings : 
 Project Name : bootloader
-Project Folder : /array_data01/STM32-boot--01/bootloader
+Project Folder : /array_data01/STM32-boot--02/bootloader
 Toolchain / IDE : SW4STM32
 Firmware Package Name and Version : STM32Cube FW_F1 V1.4.0
 
 
 Code Generation Settings : 
 STM32Cube Firmware Library Package : Copy only the necessary library files
-Generate peripheral initialization as a pair of '.c/.h' files per peripherals : No
+Generate peripheral initialization as a pair of '.c/.h' files per peripheral : No
 Backup previously generated files when re-generating : No
 Delete previously generated files when not re-generated : Yes
 Set all free pins as analog (to optimize the power consumption) : No

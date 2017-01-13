@@ -1,8 +1,7 @@
 /**
   ******************************************************************************
-  * @file           : usbd_desc.h
-  * @version        : v1.0_Cube
-  * @brief          : Header for usbd_desc file.
+  * File Name          : main.h
+  * Description        : This file contains the common defines of the application
   ******************************************************************************
   *
   * Copyright (c) 2017 STMicroelectronics International N.V. 
@@ -40,75 +39,29 @@
   * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
   ******************************************************************************
-*/
-
+  */
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __USBD_DESC__H__
-#define __USBD_DESC__H__
+#ifndef __MAIN_H
+#define __MAIN_H
+  /* Includes ------------------------------------------------------------------*/
 
-#ifdef __cplusplus
- extern "C" {
-#endif
-/* Includes ------------------------------------------------------------------*/
-#include "usbd_def.h"
+/* USER CODE BEGIN Includes */
 
-/** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
-  * @{
-  */
-  
-/** @defgroup USB_DESC
-  * @brief general defines for the usb device library file
-  * @{
-  */ 
+/* USER CODE END Includes */
 
-/** @defgroup USB_DESC_Exported_Defines
-  * @{
-  */
+/* Private define ------------------------------------------------------------*/
 
-/**
-  * @}
-  */ 
+/* USER CODE BEGIN Private defines */
 
-/** @defgroup USBD_DESC_Exported_TypesDefinitions
-  * @{
-  */
-/**
-  * @}
-  */ 
-
-/** @defgroup USBD_DESC_Exported_Macros
-  * @{
-  */ 
-/**
-  * @}
-  */ 
-
-/** @defgroup USBD_DESC_Exported_Variables
-  * @{
-  */ 
-extern USBD_DescriptorsTypeDef FS_Desc;
-/**
-  * @}
-  */ 
-
-/** @defgroup USBD_DESC_Exported_FunctionsPrototype
-  * @{
-  */ 
-  
-/**
-  * @}
-  */ 
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* __USBD_DESC_H */
+/* USER CODE END Private defines */
 
 /**
   * @}
   */ 
 
 /**
-* @}
+  * @}
 */ 
+
+#endif /* __MAIN_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
