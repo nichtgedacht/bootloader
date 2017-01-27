@@ -1,6 +1,6 @@
 Configuration	bootloader
-STM32CubeMX 	4.18.0
-Date	01/13/2017
+STM32CubeMX 	4.19.0
+Date	01/27/2017
 MCU	STM32F103C8Tx
 
 
@@ -32,7 +32,7 @@ SOFTWARE PROJECT
 
 Project Settings : 
 Project Name : bootloader
-Project Folder : /array_data01/STM32-boot--02/bootloader
+Project Folder : /array_data01/STM32-boot--03/bootloader
 Toolchain / IDE : SW4STM32
 Firmware Package Name and Version : STM32Cube FW_F1 V1.4.0
 
