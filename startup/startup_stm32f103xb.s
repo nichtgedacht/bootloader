@@ -50,6 +50,7 @@
 
 .global g_pfnVectors
 .global Default_Handler
+.global DFUrequest
 
 /* start address for the initialization values of the .data section.
 defined in linker script */
@@ -73,10 +74,22 @@ defined in linker script */
  * @retval : None
 */
 
+    .section .noinit,"aw",%progbits
+DFUrequest:
+.skip 4
+
   .section .text.Reset_Handler
   .weak Reset_Handler
   .type Reset_Handler, %function
 Reset_Handler:
+
+/** Detect and save special flag (DFUrequest)
+ * when bootloader was requested by application. */
+  ldr r0, =_estack /* r0 <-- address of special flag */
+  ldr r1, [r0, #0] /* r1 <-- flag content */
+  ldr r2, =DFUrequest /* make a copy of flag */
+  str r1, [r2, #0] /* _blrequest <-- flag content */
+  str r0, [r0, #0] /* overwrite/invalidate special flag */
 
 /* Copy the data segment initializers from flash to SRAM */
   movs r1, #0

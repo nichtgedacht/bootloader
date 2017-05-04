@@ -75,14 +75,12 @@ static void MX_CRC_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-void read_flash_vars(uint32_t *data, uint16_t length, uint16_t offset);
-uint32_t erase_flash_page(void);
-uint32_t write_flash_vars(uint32_t* data, uint16_t length, uint16_t offset);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
 
 uint32_t flash_buf[256];
+extern volatile uint32_t DFUrequest;
 
 /* USER CODE END 0 */
 
@@ -106,9 +104,6 @@ int main(void)
 
     /* USER CODE BEGIN 2 */
 
-    // read flag from last 32 bit wide space in flash page
-    read_flash_vars((uint32_t *) flash_buf, 1, 1020);
-
     // enable USB on maple mine clone or use reset as default state
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
     HAL_Delay(100);
@@ -118,12 +113,11 @@ int main(void)
     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);
 
     // Jump to App if flag is not set and also switch is not pressed
-    if (GPIO_PIN_SET == HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8) && strcmp((const char *) flash_buf, (const char *) "DFU") != 0)
+    if (GPIO_PIN_SET == HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8) && 0xDB1953DB != DFUrequest)
     {
         // Test if application seems to be programmed at APPLICATION_ADDRESS
         if (((*(__IO uint32_t*) APPLICATION_ADDRESS ) & 0x2FFE0000) == 0x20000000)
         {
-
             // Prevent motor start while reboot
             HAL_Delay(150);
 
@@ -134,12 +128,6 @@ int main(void)
             JumpToApplication();
         }
     }
-
-    // Dump and erase flash page. Clear flag in page buffer and write back to flash keeping the config vars
-    read_flash_vars((uint32_t *) flash_buf, 256, 0);
-    flash_buf[255] = 0xFFFFFFFF;
-    erase_flash_page();
-    write_flash_vars((uint32_t*) flash_buf, 256, 0);
 
     MX_USB_DEVICE_Init();
 
@@ -213,16 +201,14 @@ void SystemClock_Config(void)
     HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 }
 
-/* CRC init function */
+/* CRC init function not used yet */
 static void MX_CRC_Init(void)
 {
-
     hcrc.Instance = CRC;
     if (HAL_CRC_Init(&hcrc) != HAL_OK)
     {
         Error_Handler();
     }
-
 }
 
 /** Configure pins as 
@@ -234,16 +220,12 @@ static void MX_CRC_Init(void)
  */
 static void MX_GPIO_Init(void)
 {
-
     GPIO_InitTypeDef GPIO_InitStruct;
 
     /* GPIO Ports Clock Enable */
-    __HAL_RCC_GPIOD_CLK_ENABLE()
-    ;
-    __HAL_RCC_GPIOA_CLK_ENABLE()
-    ;
-    __HAL_RCC_GPIOB_CLK_ENABLE()
-    ;
+    __HAL_RCC_GPIOD_CLK_ENABLE();
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    __HAL_RCC_GPIOB_CLK_ENABLE();
 
     /*Configure GPIO pin Output Level */
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
@@ -259,79 +241,9 @@ static void MX_GPIO_Init(void)
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
 }
 
 /* USER CODE BEGIN 4 */
-void read_flash_vars(uint32_t *data, uint16_t length, uint16_t offset)
-{
-    uint32_t Address = FLASH_USER_START_ADDR;
-    uint16_t i;
-
-    Address += offset;
-
-    for (i = 0; i < length; i++)
-    {
-        *data = *(uint32_t*) Address;
-        Address += 4;
-        data++;
-    }
-}
-
-uint32_t erase_flash_page(void)
-{
-    FLASH_EraseInitTypeDef EraseInitStruct;
-    uint32_t PAGEError = 0;
-    //Erase flash page(s)
-    //Fill EraseInit structure
-    EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
-    EraseInitStruct.PageAddress = FLASH_USER_START_ADDR;
-    EraseInitStruct.NbPages = (FLASH_USER_END_ADDR - FLASH_USER_START_ADDR) / FLASH_PAGE_SIZE;
-
-    HAL_FLASH_Unlock();
-
-    if (HAL_FLASHEx_Erase(&EraseInitStruct, &PAGEError) != HAL_OK)
-    {
-        // PAGEError will contain the faulty page
-        // error code from 'HAL_FLASH_GetError()'
-        HAL_FLASH_Lock();
-        return HAL_FLASH_GetError();
-    }
-    else
-    {
-        HAL_FLASH_Lock();
-        return HAL_OK;
-    }
-}
-
-uint32_t write_flash_vars(uint32_t* data, uint16_t length, uint16_t offset)
-{
-    uint32_t Address = FLASH_USER_START_ADDR;
-    __IO uint32_t data32;
-
-    Address += offset;
-
-    HAL_FLASH_Unlock();
-    while (length > 0)
-    {
-        data32 = *(__IO uint32_t *) data;
-
-        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address, data32) == HAL_OK)
-        {
-            Address += 4;
-            data++;
-            length--;
-        }
-        else
-        {
-            HAL_FLASH_Lock();
-            return HAL_FLASH_GetError();
-        }
-    }
-    HAL_FLASH_Lock();
-    return HAL_OK;
-}
-
 /* USER CODE END 4 */
 
 /**
